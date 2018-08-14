@@ -2281,7 +2281,7 @@ html.w-mod-js *[data-ix="show-call-back-popup"] {
   }
   .stat-label.left {
     position: static;
-    width: 33%;
+    width: 100%;
     margin-top: 20px;
   }
   .stat-label.left.revenue {
@@ -2371,8 +2371,7 @@ html.w-mod-js *[data-ix="show-call-back-popup"] {
     width: 100%;
   }
   .form-block {
-    position: static;
-    height: 100px;
+    position: static;    
     margin-top: 92px;
   }
   .column-21 {

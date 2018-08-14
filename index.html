@@ -162,13 +162,14 @@ Amount: {{ payment_detail.amount_crypto }} {{payment_detail.currency}}
 Payment Status: <a v-bind:href="payment_detail.status_url" target="_blank">Click Here</a>
                 </pre>
               </span>
-
+            </p>
+            <p class="delivery">
               <span  v-if="quantity > 0">
               Units Price: {{ accounting.formatMoney(price, "USD ", 2) }} <br/>
               Tax (7%): {{ accounting.formatMoney(tax, "USD ", 2) }} <br/>
               Total Payment: {{ accounting.formatMoney(total_price, "USD ", 2) }} <br/>
               </span>
-              Delivered in: {{ product.lead_time_days }} days
+              Delivered in: {{ product.lead_time_days }} days            
             </p>
           </form>          
         </div>

@@ -2029,8 +2029,9 @@ html.w-mod-js *[data-ix="show-call-back-popup"] {
     color: #005e68;
   }
   .select-field {
-    width: 50%;
+    width: 45%;
     height: 50px;
+    margin-right: 5px;
   }
   .delivery {
     font-size: 14px;

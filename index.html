@@ -16,6 +16,8 @@
   <link href="images/scoop-logo32_1scoop-logo32.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/scoop-logo256.png" rel="apple-touch-icon">
   <link rel="stylesheet" type="text/css" href="jquery.fullPage.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>  
+  <script src="/vendor/axios/axios.min.js"></script>
 </head>
 <body>
   <div data-collapse="medium" data-animation="default" data-duration="400" class="navbar w-nav">
@@ -61,15 +63,17 @@
       </div>
     </div>
   </div>
-  <div class="container-12 w-container">
+  <div class="container-12 w-container" id="product">
     <div class="w-row">
       <div class="column-19 w-hidden-small w-hidden-tiny w-col w-col-6">
-        <div class="product-image"></div>
+        <div class="product-image">
+          <img v-bind:src="product.img_url">
+        </div>
         <h2 class="product-coins left">type(s) of coin mined</h2>
         <div class="product-coins-logos"></div>
       </div>
       <div class="column-20 w-col w-col-6">
-        <h1 class="template-product-name">Innosilicon A9 Zmaster</h1>
+        <h1 class="template-product-name">{{ product.manu_model }}</h1>
         <h2 class="template-product-promo">buy 1 get 1 free</h2>
         <div class="product-image w-hidden-main w-hidden-medium"></div>
         <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
@@ -77,19 +81,19 @@
           <div class="column-17 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
             <div class="template-product-stat"><img src="images/icon-hash.svg" width="40" height="50" class="image-5">
               <h2 class="stat-label">hash rate</h2>
-              <h2 id="hash-rate" class="stat-value">50K/sols</h2>
+              <h2 id="hash-rate" class="stat-value">{{ product.hashrate }}</h2>
             </div>
           </div>
           <div class="column-18 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
             <div class="template-product-stat"><img src="images/icon-power.svg" width="28" height="50" class="image-5-copy">
               <h2 class="stat-label">power</h2>
-              <h2 id="power" class="stat-value">620W</h2>
+              <h2 id="power" class="stat-value">{{ product.power }}</h2>
             </div>
           </div>
           <div class="column-21 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
             <div class="template-product-stat"><img src="images/icon-algorithm.svg" width="32" height="50" class="image-5">
               <h2 class="stat-label">algorithm</h2>
-              <h2 id="algorithm" class="stat-value">EQUIHASH</h2>
+              <h2 id="algorithm" class="stat-value">{{ product.algo }}</h2>
             </div>
           </div>
         </div>
@@ -99,19 +103,27 @@
         <div class="w-row">
           <div class="w-col w-col-4 w-col-small-6 w-col-tiny-6">
             <h2 class="stat-label left">unit(s)</h2>
-            <h2 id="unit-amount" class="stat-value left">1 - 4<br>5 - 10<br>&gt;10</h2>
+            <h2 id="unit-amount" class="stat-value left">
+              <div>1</div>
+              <div v-for="discount in discounts">{{ discount.lower_limit }} or more<br/></div>
           </div>
           <div class="w-col w-col-8 w-col-small-6 w-col-tiny-6">
             <h2 class="stat-label left">unit price</h2>
-            <h2 id="unit-price" class="stat-value left">6,200<br>6,000<br>5,800</h2>
+            <h2 id="unit-price" class="stat-value left">
+              <div>{{ accounting.formatMoney(product.usd_price, "USD ", 0) }}</div>
+              <div v-for="discount in discounts">
+                {{ accounting.formatMoney(product.usd_price * (1 - discount.discount), "USD ", 0)}}
+              </div>
+            </h2>
           </div>
         </div>
         <div class="div-block-95"></div>
         <h2 class="stat-label left revenue">projected net revenue:</h2>
         <h2 id="net-revenue" class="stat-value left">USD$ X.XX / DAY</h2>
         <div class="form-block w-clearfix w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" class="form w-clearfix"><select id="quantity" name="quantity" required="" data-name="quantity" class="select-field w-select"><option value="">Select quantity</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select><input type="submit" value="add to cart" data-wait="Please wait..." class="submit-button-2 w-button">
-            <p class="delivery">Delivered in: 5 days (2nd unit September)</p>
+          <form id="email-form" name="email-form" data-name="Email Form" class="form w-clearfix"><select id="quantity" name="quantity" required="" data-name="quantity" class="select-field w-select"><option value="">Select quantity</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+            <input type="submit" value="Make Payment" data-wait="Please wait..." class="submit-button-2 w-button">
+            <p class="delivery">Delivered in: {{ product.lead_time_days }} days</p>
           </form>
           <div class="w-form-done">
             <div>Thank you! Your submission has been received!</div>
@@ -201,6 +213,8 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="js/scoop-product.js" type="text/javascript"></script>
+  <script src="vendor/accounting/accounting.min.js" type="text/javascript"></script>
+  <script src="js/product.min.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>

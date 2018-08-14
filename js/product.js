@@ -17,7 +17,31 @@ var scoop = new Vue({
     products: [],
     product: "",
     product_id: "",
-    discounts: []
+    discounts: [],
+    email: "",
+    password: "",
+    currency: "",
+    quantity: 0
+  },
+  computed: {
+    price: function(){
+      let discount_rate = 0;
+      for(let i = this.discounts.length-1; i >= 0; i--){
+        discount = this.discounts[i];
+        if(this.quantity >= discount.lower_limit){
+          discount_rate = discount.discount;
+          break;
+        }
+      }
+      let price_after_discount = this.product.usd_price * this.quantity * (1 - discount_rate);
+      return price_after_discount;
+    },
+    tax: function(){
+      return this.price * 0.07;
+    },
+    total_price: function(){
+      return this.price + this.tax;
+    }
   },
   mounted: function(){
     let product_id = gup("product_id", window.location);
@@ -32,7 +56,6 @@ var scoop = new Vue({
           }
         });                
         this.product = product !== undefined ? product : this.products[0];
-        console.log(this.product);
 
         // calculate discount
         let keys = Object.keys(this.product);
@@ -47,12 +70,14 @@ var scoop = new Vue({
           }
         }
         this.discounts = discounts;
+        console.log(this);
+        console.log()
       });
   },
   methods: {
     checkout: function(data){
       var payload = {
-        "user_email": "made.adi@gmail.com",
+        "user_email": this.email,
         "user_pwd": "123456",
         "order": [
           {
@@ -61,8 +86,8 @@ var scoop = new Vue({
           }
         ],
         "payment_method": "CRYPTO",
-        "usd_amount": 10000,
-        "desired_crypto": "LTCT"
+        "usd_amount": this.total_price,
+        "desired_crypto": this.currency
       };
 
       console.log(payload);

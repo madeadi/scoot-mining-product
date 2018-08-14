@@ -121,9 +121,39 @@
         <h2 class="stat-label left revenue">projected net revenue:</h2>
         <h2 id="net-revenue" class="stat-value left">USD$ X.XX / DAY</h2>
         <div class="form-block w-clearfix w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" class="form w-clearfix"><select id="quantity" name="quantity" required="" data-name="quantity" class="select-field w-select"><option value="">Select quantity</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+          <form id="email-form" name="email-form" data-name="Email Form" class="form w-clearfix">
+            <select id="quantity" name="quantity" required="" 
+              data-name="quantity" class="select-field w-select" v-model="quantity">
+              <option value="0">Select quantity</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <input id="email" name="email" required="" data-name="email" class="select-field w-select"
+              placeholder="Email" v-model="email">
+            <input id="password" name="password" type="password" required="" data-name="password" class="select-field w-select"
+              placeholder="Password" v-model="password">
+            <select id="quantity" name="quantity" required="" data-name="quantity" class="select-field w-select"
+              v-model="currency">
+              <option value="">Select Cryptocurrency</option>
+              <option value="LTCT">LTCT</option>
+              <option value="LTC">LTC</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>                
+            </select>
             <input type="submit" value="Make Payment" data-wait="Please wait..." class="submit-button-2 w-button">
-            <p class="delivery">Delivered in: {{ product.lead_time_days }} days</p>
+            <p class="delivery">
+              Units Price: {{ accounting.formatMoney(price, "USD ", 2) }} <br/>
+              Tax (7%): {{ accounting.formatMoney(tax, "USD ", 2) }} <br/>
+              Total Payment: {{ accounting.formatMoney(total_price, "USD ", 2) }} <br/>
+              Delivered in: {{ product.lead_time_days }} days</p>
           </form>
           <div class="w-form-done">
             <div>Thank you! Your submission has been received!</div>

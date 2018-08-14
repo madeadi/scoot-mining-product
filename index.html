@@ -66,8 +66,7 @@
   <div class="container-12 w-container" id="product">
     <div class="w-row">
       <div class="column-19 w-hidden-small w-hidden-tiny w-col w-col-6">
-        <div class="product-image">
-          <img v-bind:src="product.img_url">
+        <div class="product-image" v-bind:style="{ 'background': 'url(' + product.img_url + ') no-repeat center center' }">
         </div>
         <h2 class="product-coins left">type(s) of coin mined</h2>
         <div class="product-coins-logos"></div>
@@ -75,7 +74,9 @@
       <div class="column-20 w-col w-col-6">
         <h1 class="template-product-name">{{ product.manu_model }}</h1>
         <h2 class="template-product-promo">buy 1 get 1 free</h2>
-        <div class="product-image w-hidden-main w-hidden-medium"></div>
+        <div class="product-image w-hidden-main w-hidden-medium" 
+          v-bind:style="{ 'background': 'url(' + product.img_url + ') no-repeat center center' }">          
+        </div>
         <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
         <div class="row-14 w-row">
           <div class="column-17 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">

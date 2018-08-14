@@ -18,15 +18,11 @@ var banner = ['/*!\n',
 
 // Copy third party libraries from /node_modules into /vendor
 gulp.task('vendor', function() {
-
-  // Axios
-  gulp.src(['./node_modules/axios/dist/axios.min.js'])
-    .pipe(gulp.dest('./vendor/axios'))
-
-  // Accounting
-  gulp.src(['./node_modules/accounting/accounting.min.js'])
-    .pipe(gulp.dest('./vendor/accounting'))    
-
+  gulp.src([
+      './node_modules/axios/dist/axios.min.js',
+      './node_modules/accounting/accounting.min.js',
+      './node_modules/lodash/lodash.min.js',
+    ]).pipe(gulp.dest('./vendor'))
 });
 
 // Compile SCSS

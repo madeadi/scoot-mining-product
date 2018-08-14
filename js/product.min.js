@@ -21,7 +21,16 @@ var scoop = new Vue({
     email: "",
     password: "",
     currency: "",
-    quantity: 0
+    quantity: 0,
+    payment_detail: {
+      address: "",
+      amount_crypto: 0,
+      status_url: "",
+      txn_id: "",
+      timeout: "",
+      currency: ""
+    },
+    is_buying: false,
   },
   computed: {
     price: function(){
@@ -41,6 +50,9 @@ var scoop = new Vue({
     },
     total_price: function(){
       return this.price + this.tax;
+    },
+    buy_button_text: function(){
+      return this.is_buying ? "Processing..." : "Buy Now"
     }
   },
   mounted: function(){
@@ -70,19 +82,18 @@ var scoop = new Vue({
           }
         }
         this.discounts = discounts;
-        console.log(this);
-        console.log()
       });
   },
   methods: {
-    checkout: function(data){
+    checkout: function(){
+      this.is_buying = true;
       var payload = {
         "user_email": this.email,
-        "user_pwd": "123456",
+        "user_pwd": this.password,
         "order": [
           {
-            "product_id": data.product.product_id,
-            "qty": data.quantity
+            "product_id": this.product.product_id,
+            "qty": this.quantity
           }
         ],
         "payment_method": "CRYPTO",
@@ -90,13 +101,13 @@ var scoop = new Vue({
         "desired_crypto": this.currency
       };
 
-      console.log(payload);
-
       axios
         .post(url + "/Sales", payload)
-        .then(response => {
-          console.log(response.data);
-          });
+        .then(function(response){
+          scoop.payment_detail = Object.assign({}, response.data);
+          scoop.payment_detail.currency = scoop.currency;
+          scoop.is_buying = false;
+        });
       }
     }
   });
